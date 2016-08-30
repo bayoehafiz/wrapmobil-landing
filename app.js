@@ -13,25 +13,28 @@ $(function() {
         // Serialize the form data.
         var formData = $('#email').val();
 
-        // Submit the form using AJAX.
-        $.ajax({
-                type: 'POST',
-                url: $(form).attr('action'),
-                data: {
-                    email: formData
-                }
-            })
-            .done(function(response) {
-                // Make sure that the formMessages div has the 'success' class.
-                $('#email').val();
-                $('#btn-subscribe').text('Thank You');
-                $('#btn-subscribe').css({
-                    'background-color': '#0ea51c',
-                    'border-color': '#0ea51c'
+        if (formdata != '') {
+            // Submit the form using AJAX.
+            $.ajax({
+                    type: 'POST',
+                    url: $(form).attr('action'),
+                    data: {
+                        email: formData
+                    }
+                })
+                .done(function(response) {
+                    // Make sure that the formMessages div has the 'success' class.
+                    $('#email').val();
+                    $('#btn-subscribe').text('Thank You');
+                    $('#btn-subscribe').css({
+                        'background-color': '#0ea51c',
+                        'border-color': '#0ea51c'
+                    });
+                })
+                .fail(function(data) {
+                    alert('Error! something happens');
                 });
-            })
-            .fail(function(data) {
-                alert('Error! something happens');
-            });
+        }
+
     });
 });
