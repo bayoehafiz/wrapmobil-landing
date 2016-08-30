@@ -10,10 +10,10 @@ $(function() {
         // Stop the browser from submitting the form.
         event.preventDefault();
 
-        // Serialize the form data.
-        var formData = $('#email').val();
 
-        if (formdata != '') {
+        if ($('#email').val() !== '') {
+            // Serialize the form data.
+            var formData = $('#email').val();
             // Submit the form using AJAX.
             $.ajax({
                     type: 'POST',
