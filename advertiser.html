@@ -8,6 +8,7 @@
     <title>:: Welcome To WRAP Mobile ::</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
     <link href="css/app-responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -109,9 +110,9 @@
                             <input type="text" class="form-control" placeholder="Nomor Telepon" title="" id="tel">
                         </div>
                         <div class="form-element">
-                            <button class="btn">DAFTAR</button>
+                            <button class="btn" id="regBtn">DAFTAR</button>
                         </div>
-                        <span class="form-text1">Sudah punya akun? <a href="#">Login</a> disini</span>
+                        <span class="form-text1">Sudah punya akun? <a href="https://beta.wrapmobil.co.id/#/access/signin">Login</a> disini</span>
                     </div>
                 </div>
             </div>
@@ -158,6 +159,9 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/retina.min.js"></script>
+    <!-- Sweetalert 2 -->
+    <script src="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.js"></script>
+    <!-- Main script -->
     <script src="js/app.js"></script>
     <script>
     window.intercomSettings = {
@@ -199,6 +203,26 @@
             }
         }
         // eof interkom integration
+
+        // Registration form
+        $('#regBtn').click(function() {
+            var name = $('#name').val();
+            var name2 = $('#name2').val();
+            var email = $('#email').val();
+            var tel = $('#tel').val();
+
+            if (name == '' || name == undefined)
+                swal('Failed', 'Please enter your name', 'error');
+            else if (name2 == '' || name2 == undefined)
+                swal('Failed', 'Please enter your company name', 'error');
+            else if (email == '' || email == undefined)
+                swal('Failed', 'Please enter valid email', 'error');
+            else if (tel == '' || tel == undefined)
+                swal('Failed', 'Please enter your phone number', 'error');
+            else
+                window.location.href = "https://beta.wrapmobil.co.id/#/access/register?n=" + name + "&c=" + name2 + "&e=" + email + "&t=" + tel;
+        });
+        // eof Registration form
     });
     </script>
 </body>
