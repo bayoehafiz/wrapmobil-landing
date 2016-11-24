@@ -264,6 +264,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/retina.min.js"></script>
     <script src="js/cocoen.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
     <script>
     window.intercomSettings = {
         app_id: "tp72tgp4",
@@ -272,6 +273,9 @@
     </script>
     <script>
     $(function() {
+        // Mixpanel 
+        mixpanel.track("page_views: index");
+
         // interkom integration
         var w = window;
         var ic = w.Intercom;
@@ -316,6 +320,24 @@
                     return false;
                 }
             }
+        });
+
+        $('#chatBtn').click(function() { // Mixpanel mixpanel.track("click: chat"); })
+
+
+        $('.btn1').click(function() {
+            // Mixpanel 
+            mixpanel.track("click: driver");
+        })
+
+        $('.btn2').click(function() {
+            // Mixpanel 
+            mixpanel.track("click: advertiser");
+        })
+
+        $('.cocoen').bind('taphold', function(e) {
+            // Mixpanel 
+            mixpanel.track("interactions: slide");
         });
     });
     </script>

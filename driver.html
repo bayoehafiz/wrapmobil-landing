@@ -109,7 +109,7 @@
                             <input type="text" class="form-control" placeholder="Nomor Telepon" title="" id="tel">
                         </div>
                         <div class="form-element">
-                            <button class="btn">DAFTAR</button>
+                            <button class="btn" id="regBtn">DAFTAR</button>
                         </div>
                         <span class="form-text1">Sudah punya akun? <a href="#">Login</a> disini</span>
                     </div>
@@ -167,6 +167,9 @@
     </script>
     <script>
     $(function() {
+        // Mixpanel
+        mixpanel.track("page_views: driver");
+
         // interkom integration
         var w = window;
         var ic = w.Intercom;
@@ -199,6 +202,16 @@
             }
         }
         // eof interkom integration
+
+        $('#chatBtn').click(function() {
+            // Mixpanel 
+            mixpanel.track("click: chat");
+        })
+
+        $('#regBtn').click(function() {
+            // Mixpanel
+            mixpanel.track("signup: driver");
+        })
     });
     </script>
 </body>

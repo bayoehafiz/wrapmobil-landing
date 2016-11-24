@@ -171,6 +171,9 @@
     </script>
     <script>
     $(function() {
+        // Mixpanel
+        mixpanel.track("page_views: advertiser");
+
         // interkom integration
         var w = window;
         var ic = w.Intercom;
@@ -204,8 +207,16 @@
         }
         // eof interkom integration
 
+        $('#chatBtn').click(function() {
+            // Mixpanel 
+            mixpanel.track("click: chat");
+        })
+
         // Registration form
         $('#regBtn').click(function() {
+            // Mixpanel
+            mixpanel.track("signup: advertiser");
+
             var name = $('#name').val();
             var name2 = $('#name2').val();
             var email = $('#email').val();
