@@ -322,7 +322,10 @@
             }
         });
 
-        $('#chatBtn').click(function() { // Mixpanel mixpanel.track("click: chat"); })
+        $('#chatBtn').click(function() {
+            // Mixpanel 
+            mixpanel.track("click: chat");
+        })
 
 
         $('.btn1').click(function() {
@@ -339,6 +342,7 @@
             // Mixpanel 
             mixpanel.track("interactions: slide");
         });
+
     });
     </script>
     <script>
