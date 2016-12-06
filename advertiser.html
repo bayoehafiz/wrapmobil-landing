@@ -8,9 +8,9 @@
     <title>:: Welcome To WRAP Mobile ::</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
     <link href="css/app-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/ladda-themeless.min.css" />
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -110,7 +110,7 @@
                             <input type="text" class="form-control" placeholder="Nomor Telepon" title="" id="tel">
                         </div>
                         <div class="form-element">
-                            <button class="btn" id="regBtn">DAFTAR</button>
+                            <button class="btn ladda-button" data-style="expand-right" id="regBtn"><span class="ladda-label">DAFTAR</span></button>
                         </div>
                         <span class="form-text1">Sudah punya akun? <a href="https://beta.wrapmobil.co.id/#/access/signin">Login</a> disini</span>
                     </div>
@@ -155,12 +155,13 @@
         </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/noty/js/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/spin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/ladda.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/retina.min.js"></script>
-    <!-- Sweetalert 2 -->
-    <script src="https://cdn.jsdelivr.net/sweetalert2/6.1.1/sweetalert2.min.js"></script>
     <!-- Main script -->
     <script src="js/app.js"></script>
     <script>
@@ -213,25 +214,93 @@
         })
 
         // Registration form
-        $('#regBtn').click(function() {
+        $('#regBtn').click(function(e) {
+            // Ladda button
+            e.preventDefault();
+            var l = Ladda.create(this);
+            l.start();
+
             // Mixpanel
             mixpanel.track("signup: advertiser");
 
             var name = $('#name').val();
             var name2 = $('#name2').val();
             var email = $('#email').val();
+            var emailtype = 'html'
             var tel = $('#tel').val();
 
-            if (name == '' || name == undefined)
-                swal('Failed', 'Please enter your name', 'error');
-            else if (name2 == '' || name2 == undefined)
-                swal('Failed', 'Please enter your company name', 'error');
-            else if (email == '' || email == undefined)
-                swal('Failed', 'Please enter valid email', 'error');
-            else if (tel == '' || tel == undefined)
-                swal('Failed', 'Please enter your phone number', 'error');
-            else
-                window.location.href = "https://beta.wrapmobil.co.id/#/access/register?n=" + name + "&c=" + name2 + "&e=" + email + "&t=" + tel;
+            if (name == '' || name == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please type your name',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax'
+                    type: 'error'
+                });
+            } else if (name2 == '' || name2 == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please enter your company name',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax':
+                    type: 'error'
+                });
+            } else if (email == '' || email == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please enter valid email',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax'
+                    type: 'error'
+                });
+            } else if (tel == '' || tel == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please enter your phone number',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax'
+                    type: 'error'
+                });
+            } else {
+                var data = {
+                    name: name,
+                    cname: name2,
+                    email: email,
+                    phone: tel
+                }
+
+                $.ajax({
+                    // url: 'https://api.wrapmobil.co.id/auth/register/adv',
+                    url: 'http://localhost:3000/auth/register/adv',
+                    type: 'POST',
+                    data: data,
+                    success: function(msg) {
+                        if (!msg.success) {
+                            l.stop();
+                            noty({
+                                text: msg.message,
+                                layout: 'top',
+                                theme: 'relax', // or 'relax'
+                                type: 'error'
+                            });
+                        } else {
+                            l.stop();
+                            noty({
+                                text: 'Thank You! Please check your email inbox for further information about your account activation.',
+                                layout: 'top',
+                                theme: 'relax', // or 'relax'
+                                type: 'success'
+                            });
+                        }
+
+                        // dummy reset
+                        $('#name').val('').focus();
+                        $('#name2').val('');
+                        $('#email').val('');
+                        $('#tel').val('');
+                    }
+                });
+            }
         });
         // eof Registration form
     });

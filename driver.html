@@ -10,6 +10,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
     <link href="css/app-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/ladda-themeless.min.css" />
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -91,14 +92,14 @@
             <div class="container-fluid">
                 <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12 col-lg-offset-1">
                     <div class="register-form f-r">
-                        <h2>Daftarkan sekarang</h2>
+                        <h2>Daftar sekarang</h2>
                         <div class="form-element">
-                            <label for="name" class="empty-label">Nama</label>
-                            <input type="text" class="form-control" placeholder="Nama" title="" id="name">
+                            <label for="name" class="empty-label">Nama Depan</label>
+                            <input type="text" class="form-control" placeholder="Nama Depan" title="" id="fname">
                         </div>
                         <div class="form-element">
-                            <label for="name2" class="empty-label">Nama Perusahaan</label>
-                            <input type="text" class="form-control" placeholder="Nama Perusahaan" title="" id="name2">
+                            <label for="name2" class="empty-label">Nama Belakang</label>
+                            <input type="text" class="form-control" placeholder="Nama Belakang" title="" id="lname">
                         </div>
                         <div class="form-element">
                             <label for="email" class="empty-label">Email</label>
@@ -109,7 +110,7 @@
                             <input type="text" class="form-control" placeholder="Nomor Telepon" title="" id="tel">
                         </div>
                         <div class="form-element">
-                            <button class="btn" id="regBtn">DAFTAR</button>
+                            <button class="btn ladda-button" data-style="expand-right" id="regBtn"><span class="ladda-label">DAFTAR</span></button>
                         </div>
                         <span class="form-text1">Sudah punya akun? <a href="#">Login</a> disini</span>
                     </div>
@@ -154,7 +155,10 @@
         </div>
     </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/noty/js/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/spin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ladda-bootstrap/0.9.4/ladda.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/retina.min.js"></script>
@@ -208,9 +212,96 @@
             mixpanel.track("click: chat");
         })
 
-        $('#regBtn').click(function() {
+        $('#regBtn').click(function(e) {
+            // Ladda button
+            e.preventDefault();
+            var l = Ladda.create(this);
+            l.start();
+
             // Mixpanel
             mixpanel.track("signup: driver");
+
+            var fname = $('#fname').val();
+            var lname = $('#lname').val();
+            var email = $('#email').val();
+            var tel = $('#tel').val();
+
+            if (fname == '' || fname == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please type your first name',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax'
+                    type: 'error'
+                });
+                $('#fname').focus();
+            } else if (lname == '' || lname == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please type your last name',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax':
+                    type: 'error'
+                });
+                $('#lname').focus();
+            } else if (email == '' || email == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please enter valid email',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax'
+                    type: 'error'
+                });
+                $('#email').focus();
+            } else if (tel == '' || tel == undefined) {
+                l.stop();
+                noty({
+                    text: 'Please enter your phone number',
+                    layout: 'top',
+                    theme: 'relax', // or 'relax'
+                    type: 'error'
+                });
+                $('#tel').focus();
+            } else {
+                var data = {
+                    fname: fname,
+                    lname: lname,
+                    email: email,
+                    phone: tel
+                }
+
+                $.ajax({
+                    // url: 'https://api.wrapmobil.co.id/auth/register/drv',
+                    url: 'http://localhost:3000/auth/register/drv',
+                    type: 'POST',
+                    data: data,
+                    success: function(msg) {
+                        if (!msg.success) {
+                            l.stop();
+                            noty({
+                                text: msg.message,
+                                layout: 'top',
+                                theme: 'relax', // or 'relax'
+                                type: 'error'
+                            });
+                        } else {
+                            l.stop();
+                            noty({
+                                text: 'Thank You! Your data has been successfully listed in the waiting list. We will review it and contact you later about next step registration process.',
+                                layout: 'top',
+                                theme: 'relax', // or 'relax'
+                                type: 'success'
+                            });
+                        }
+
+                        // dummy reset
+                        $('#fname').val('').focus();
+                        $('#lname').val('');
+                        $('#email').val('');
+                        $('#tel').val('');
+                    }
+                });
+            }
         })
     });
     </script>

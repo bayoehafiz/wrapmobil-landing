@@ -1,0 +1,20 @@
+{
+  "name": "Wrap Mobil landing page",
+  "homepage": "https://github.com/colorblindlabs/wrapmobil_landing",
+  "authors": [
+    "Bayu Hafiz <bayu@colorblindlabs.com>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "noty": "^2.3.8"
+  }
+}
