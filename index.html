@@ -80,7 +80,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="contact">
-                    <p>HUBUNGI KAMI</p>
+                    <p><a href="mailto:manish@wrapmobil.co.id" class="link" style="border:none;">HUBUNGI KAMI</a></p>
                     <span><a href="#" id="chatBtn"><strong>CHAT NOW</strong></a></span>
                 </div>
             </div>
@@ -267,6 +267,7 @@
     <script type="text/javascript" src="js/retina.min.js"></script>
     <script src="js/cocoen.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-touch-events/1.0.5/jquery.mobile-events.js"></script>
+    <script src="js/jquery.webmailto.js"></script>
     <script>
     window.intercomSettings = {
         app_id: "tp72tgp4",
@@ -310,6 +311,11 @@
             }
         }
         // eof interkom integration
+
+        // a:mailto protection
+        $('a[href^="mailto:"]').each(function() {
+            this.href = this.href.replace('(at)', '@').replace(/\(dot\)/g, '.');
+        });
 
         $('a[href*="#"]:not([href="#"])').click(function() {
             if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
